@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: department-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: department-service
+  template:
+    metadata:
+      labels:
+        app: department-service
+    spec:
+      containers:
+        - name: department-service
+          image: omkar8284/docker-micro:department-service
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8082
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: docker
+            - name: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+              value: http://service-registry:8761/eureka/
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:mysql://mysql-common:3306/common_db
+            - name: SPRING_DATASOURCE_USERNAME
+              value: root
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: root
+
